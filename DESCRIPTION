@@ -1,0 +1,11 @@
+Package: HallmarkGenes
+Type: Package
+Title: SubsetHallmarkCellularPathways
+Version: 0.1.0
+Author: Ken Dao
+Description: This package takes a GSEA Enriched Signatures Table and Assigns Hallmark
+Gene pathways (.gmt files from the GSEA website) to genes found within the 
+core enrichment column.
+License: CC0
+Encoding: UTF-8
+LazyData: true
