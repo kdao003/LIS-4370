@@ -6,6 +6,7 @@ Author: Ken Dao
 Description: This package takes a GSEA Enriched Signatures Table and Assigns Hallmark
 Gene pathways (.gmt files from the GSEA website) to genes found within the 
 core enrichment column.
+Depends:R (>= 3.1.2), tidyverse
 License: CC0
 Encoding: UTF-8
 LazyData: true
