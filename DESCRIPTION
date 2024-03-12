@@ -3,9 +3,8 @@ Type: Package
 Title: SubsetHallmarkCellularPathways
 Version: 0.1.0
 Author: Ken Dao
-Description: This package takes a GSEA Enriched Signatures Table and Assigns Hallmark
-Gene pathways (.gmt files from the GSEA website) to genes found within the 
-core enrichment column.
+Description: This package takes hallmark pathways downloaded from the GSEA webiste (have to be in .gmt files), 
+and compiles them into 1 object.
 Depends:R (>= 3.1.2), qusage
 License: CC0
 Encoding: UTF-8
