@@ -1,0 +1,89 @@
+---
+title: "Hallmark Genes"
+author: "Ken Dao"
+date: "2024-03-30"
+output: html_document
+---
+
+GSEA enriched signature tables give users lots of information about different genes that may be enriched in a specified sample. Examples of information the table provides can be the normalized enrichment score (NES, tells whether genes within a sample are upregulated or downregulated) and the adjusted p-value. However, these tables lack the context to explain why certain genes in a sample are solely enriched in this sample than different genes found in a different sample. The Hallmark Genes package solves this issue by allowing users to streamline the process of identifying correlating gene sets to the genes enriched in these samples. For example, a gene set from the GSEA website contains genes such as TNFalpha and IL6 that correspond to inflammation. Matching this gene set to the enriched genes within a sample will allow users to see whether that sample is undergoing inflammatory stress.
+
+The purpose of my package is to be able to download a .gmt files from the GSEA website, compile/read them into one list object, and then use the genes found in each .gmt file and compare them to enriched genes found within a GSEA enriched signatures table.
+
+This document will outline a typical step-by-step process in the order of how the functions within the package will be used.
+
+##Meta_Genesets Function
+
+```{r}
+meta_genesets <- function(x)
+{
+  files <- list.files(path = x, pattern = "HALLMARK", recursive = TRUE, full.names = TRUE)
+
+return(files)
+
+}
+```
+
+This function takes the file path of GSEA gene files collected within a folder on the users system. Ideally, all of the  files will be as .gmt and found within that single folder to prevent any errors when creating this object that list the file names. The files when then be read into the next function: open_genesets.
+
+##Open_Genesets Function
+
+```{r}
+open_genesets <- function(x)
+{
+
+  gene_sets <- list()
+
+  for (i in seq.int(x)) {
+    gene_sets[[i]] <- read.gmt(x[i])
+  }
+
+  return(gene_sets)
+}
+```
+
+We'll now read in the genesets. The variable x will be the name of the object in which we have all of the file names collected. The for loop will go sequentially down each row within the list opening each gene set.
+
+##Paths_To_Match Function
+
+```{r}
+Paths_To_Match <- function(x,y)
+{
+  for(i in 1:length(y))
+  {
+    x <- x %>%
+      mutate(
+        matched_pathways = ifelse(str_contains(core_enrichment, y[[i]], ignore.case = FALSE),
+                                      names(y[[i]]), "No Pathway Found"))
+  }
+ return(x)
+}
+
+```
+
+Considering that this package is to assist in analysis of enriched signature tables generated from a gene set enrichment analysis (GSEA), we can take the gene sets opened from the open_genesets function and correlate specific samples within the enriched signatures table that correlate to these gene sets. This is done by examining the genes that are enriched in the core_enrichment column of the enriched signatures table. This function allows users to do so.
+
+##Subset_To_Hallmarkpaths Function
+
+```{r}
+
+Subset_To_Hallmarkpaths <- function(x)
+{
+  x <- x %>%
+    filter(str_detect(ID,"HALLMARK.*$"))
+}
+
+```
+
+Last but not least, this function allows users to quickly subset their enriched signatures table to samples that correspond to Hallmark Pathways. This function is not directly involved within the step-by-step process but it is an additional feature for users to avoid having to write the code themselves. These pathways are involved in a variety of metabolic, transcription, and protein pathways within the cell. 
+
+
+
+
+
+
+
+
+
+
+
+
